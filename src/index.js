@@ -1,33 +1,26 @@
 module.exports = function longestConsecutiveLength(array) {
-	if (array.length == 0) {
+    if (array.length === 0) {
         return 0;
+    }else if (array.length === 1) {
+        return 1;        
     }
- 
-    var tmpArr = [];
-    var max = 1;
- 
-    for (var i=0; i<array.length; i++)
-        tmpArr.push(array[i]);
- 
-    for (var i=0; i<array.length; i++) {
-        var left = array[i] - 1;
-        var right = array[i] + 1;
-        var count = 1;
- 
-        while (tmpArr.indexOf(left) != -1) {
-            count++;
-            tmpArr.splice(tmpArr.indexOf(left), 1);
-            left--;
+    array.sort(function (a, b) {
+        return a - b;        
+    });
+
+    var step = 1;
+    var tempSeq = 1;
+    var sequence = 2;   
+
+    for (var i = 0; i < array.length; i++) {
+        if (array[i] === array[i + 1] - step) {
+            tempSeq++;
+        }else {
+            if (tempSeq > sequence) sequence = tempSeq;
+            tempSeq = 2;
+            step = array[i + 1] - array[i];
         }
- 
-        while (tmpArr.indexOf(right) != -1) {
-            count++;
-            tmpArr.splice(tmpArr.indexOf(right), 1);
-            right++;
-        }
- 
-        max = Math.max(count, max);
     }
- 
-    return max;
+
+    return sequence;
 }
